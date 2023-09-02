@@ -28,6 +28,7 @@
 #define EVE_ENTITY_LIST_H
 
 #include <vector>
+#include <mutex>
 
 #include "eve-common.h"
 #include "utils/Singleton.h"
