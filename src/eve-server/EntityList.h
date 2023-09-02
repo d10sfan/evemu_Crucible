@@ -160,9 +160,9 @@ public:
     void DeleteTargMgr(SystemEntity* pSE)               { m_targMgrs.erase(pSE); }
 
     // add ProbeSE* to map
-    void AddProbe(uint32 probeID, ProbeSE* pSE)         { m_probes[probeID] = pSE; }
+    void AddProbe(uint32 probeID, ProbeSE* pSE)         { std::lock_guard<std::mutex> lock(m_probesMutex); m_probes[probeID] = pSE; }
     // remove ProbeSE* from map
-    void RemoveProbe(uint32 probeID)                    { m_probes.erase(probeID); }
+    void RemoveProbe(uint32 probeID)                    { std::lock_guard<std::mutex> lock(m_probesMutex); m_probes.erase(probeID); }
 
 
 protected:
@@ -174,6 +174,8 @@ private:
     Timer m_stampTimer;
     Timer m_minuteTimer;
     Timer m_targTimer;
+
+    std::mutex m_probesMutex;
 
     // connected clients (incomplete client class data)
     //  use this to delete Client*

@@ -207,6 +207,7 @@ void EntityList::Process() {
                 titr = m_targMgrs.erase(titr);
             }
         }
+        std::lock_guard<std::mutex> lock(m_probesMutex);
         std::map<uint32, ProbeSE*>::iterator pitr = m_probes.begin();
         while (pitr != m_probes.end()) {
             if (pitr->second->ProcessTic()) {
