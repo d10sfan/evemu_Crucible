@@ -202,7 +202,7 @@ PyResult ContractProxy::SearchContracts(PyCallArgs &call) {
 
 PyResult ContractProxy::CreateContract(PyCallArgs &call, 
     PyInt* contractType, PyInt* isPrivate, std::optional <PyInt*> assigneeID, PyInt* expireTime, PyInt* duration, PyInt* startStationID, std::optional<PyInt*> endStationID,
-    PyFloat* price, PyFloat* reward, PyFloat* collateral, PyWString* title, PyWString* description) {
+    PyFloat* price, PyFloat* reward, PyFloat* collateral, PyString* title, PyString* description) {
     int startStationDivision, startSystemId, startRegionId, endSystemId, endRegionId;
     bool forCorp;
 

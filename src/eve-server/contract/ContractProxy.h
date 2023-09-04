@@ -35,7 +35,7 @@ public:
     ContractProxy();
 
 protected:
-    PyResult CreateContract(PyCallArgs& call, PyInt* contractType, PyInt* isPrivate, std::optional <PyInt*> assigneeID, PyInt* expireTime, PyInt* duration, PyInt* startStationID, std::optional<PyInt*> endStationID, PyFloat* price, PyFloat* reward, PyFloat* collateral, PyWString* title, PyWString* description);
+    PyResult CreateContract(PyCallArgs& call, PyInt* contractType, PyInt* isPrivate, std::optional <PyInt*> assigneeID, PyInt* expireTime, PyInt* duration, PyInt* startStationID, std::optional<PyInt*> endStationID, PyFloat* price, PyFloat* reward, PyFloat* collateral, PyString* title, PyString* description);
     PyResult GetContract(PyCallArgs& call, PyInt* contractID);
     PyResult AcceptContract(PyCallArgs& call, PyInt* contractID);
     PyResult CompleteContract(PyCallArgs& call, PyInt* contractID, PyInt* completionStatus);
