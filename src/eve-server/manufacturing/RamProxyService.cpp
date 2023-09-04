@@ -52,7 +52,8 @@ RamProxyService::RamProxyService() :
     this->Add("AssemblyLinesSelectPrivate", &RamProxyService::AssemblyLinesSelectPrivate);
     this->Add("AssemblyLinesSelectCorp", &RamProxyService::AssemblyLinesSelectCorp);
     this->Add("AssemblyLinesSelectAlliance", &RamProxyService::AssemblyLinesSelectAlliance);
-    this->Add("GetJobs2", &RamProxyService::GetJobs2);
+    this->Add("GetJobs2", static_cast <PyResult (RamProxyService::*)(PyCallArgs &, PyInt*, PyBool*)> (&RamProxyService::GetJobs2));
+    this->Add("GetJobs2", static_cast <PyResult (RamProxyService::*)(PyCallArgs &, PyInt*, PyInt*)> (&RamProxyService::GetJobs2));
     this->Add("InstallJob", &RamProxyService::InstallJob);
     this->Add("CompleteJob", &RamProxyService::CompleteJob);
     this->Add("GetRelevantCharSkills", &RamProxyService::GetRelevantCharSkills);
@@ -109,6 +110,17 @@ PyResult RamProxyService::AssemblyLinesSelect(PyCallArgs &call, PyString* filter
 
     _log(SERVICE__ERROR, "Unknown filter '%s'.", filter->content().c_str());
     return nullptr;
+}
+
+PyResult RamProxyService::GetJobs2(PyCallArgs &call, PyInt* ownerID, PyBool* completed) {
+    if (ownerID->value() == call.client->GetCorporationID())
+        if ((call.client->GetCorpRole() & Corp::Role::FactoryManager) != Corp::Role::FactoryManager) {
+            // what other roles (if any) can view corp factory jobs?
+            call.client->SendInfoModalMsg("You cannot view your corporation's jobs because you are not a Factory Manager.");
+            return nullptr;
+        }
+
+    return FactoryDB::GetJobs2(ownerID->value(), completed->value());
 }
 
 PyResult RamProxyService::GetJobs2(PyCallArgs &call, PyInt* ownerID, PyInt* completed) {

@@ -51,6 +51,7 @@ protected:
     PyResult GetMapOffices(PyCallArgs& call, PyInt* solarSystemID);
     PyResult GetMapObjects(PyCallArgs& call, PyInt* systemID, PyInt* region, PyInt* constellation, PyInt* system, PyInt* station, PyInt* unknown);
     PyResult GetMultiInvTypesEx(PyCallArgs& call, PyList* typeIDs);
+    PyResult GetMapConnections(PyCallArgs &call, PyInt* itemID, PyBool* reg, PyBool* con, PyBool* sol, PyInt* cel, PyInt* _c);
     PyResult GetMapConnections(PyCallArgs& call, PyInt* itemID, PyInt* reg, PyInt* con, PyInt* sol, PyInt* cel, PyInt* _c);
     PyResult GetStationSolarSystemsByOwner(PyCallArgs& call, PyInt* ownerID);
     PyResult GetCelestialStatistic(PyCallArgs& call, PyInt* celestialID);

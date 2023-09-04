@@ -40,7 +40,8 @@ ConfigService::ConfigService() :
     this->Add("GetMap", &ConfigService::GetMap);
     this->Add("GetMapOffices", &ConfigService::GetMapOffices);
     this->Add("GetMapObjects", &ConfigService::GetMapObjects);
-    this->Add("GetMapConnections", &ConfigService::GetMapConnections);
+    this->Add("GetMapConnections", static_cast <PyResult (ConfigService::*)(PyCallArgs &, PyInt*, PyBool*, PyBool*, PyBool*, PyInt*, PyInt*)> (&ConfigService::GetMapConnections));
+    this->Add("GetMapConnections", static_cast <PyResult (ConfigService::*)(PyCallArgs &, PyInt*, PyInt*, PyInt*, PyInt*, PyInt*, PyInt*)> (&ConfigService::GetMapConnections));
     this->Add("GetMultiGraphicsEx", &ConfigService::GetMultiGraphicsEx);
     this->Add("GetMultiInvTypesEx", &ConfigService::GetMultiInvTypesEx);
     this->Add("GetStationSolarSystemsByOwner", &ConfigService::GetStationSolarSystemsByOwner);
@@ -223,6 +224,19 @@ PyResult ConfigService::GetMultiInvTypesEx(PyCallArgs &call, PyList* typeIDs) {
 
 //02:10:35 L ConfigService::Handle_GetMapConnections(): size= 6
 //15:12:56 W ConfigDB::GetMapConnections: DB query - System:20000307, B1:0, B2:0, B3:1, Cel:0, _c:1  <-- this means cached
+PyResult ConfigService::GetMapConnections(PyCallArgs &call, PyInt* itemID, PyBool* reg, PyBool* con, PyBool* sol, PyInt* cel, PyInt* _c) {
+/**
+        this is cached on clientside.  only called if not in client cache
+*/
+    /** @todo check into id sending.... 9 is EvE Universe and 9000001 is EvE WormHole Universe */
+    if (itemID->value() == 9 || sol->value()) {
+        //sLog.Warning( "ConfigService::Handle_GetMapConnections()::args.id = 9 | args.sol");
+        return m_db.GetMapConnections(call.client->GetSystemID(), sol->value(), reg->value(), con->value(), cel->value(), _c->value());
+    } else {
+        return m_db.GetMapConnections(itemID->value(), sol->value(), reg->value(), con->value(), cel->value(), _c->value());
+    }
+}
+
 PyResult ConfigService::GetMapConnections(PyCallArgs &call, PyInt* itemID, PyInt* reg, PyInt* con, PyInt* sol, PyInt* cel, PyInt* _c) {
 /**
         this is cached on clientside.  only called if not in client cache
