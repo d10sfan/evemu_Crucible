@@ -271,6 +271,22 @@ PyResult ContractProxy::CreateContract(PyCallArgs &call,
      */
     uint32 contractId = 0;
     DBerror err;
+
+    printf( "INSERT INTO ctrContracts "
+        "(contractType, issuerID, issuerCorpID, forCorp, isPrivate, assigneeID, "
+        "dateIssued, dateExpired, expireTimeInMinutes, duration, numDays, "
+        "startStationID, startSolarSystemID, startRegionID, endStationID, endSolarSystemID, endRegionID, "
+        "price, reward, collateral, title, description, issuerAllianceID, startStationDivision) "
+        "VALUES "
+        "(%u, %u, %u, %u, %u, %u, "
+        "%lli, %lli, %u, %u, %u, "
+        "%u, %u, %u, %u, %u, %u,"
+        "%u, %u, %u, '%s', '%s', %u, %u)",
+        contractType->value(), call.client->GetCharacterID(), call.client->GetCorporationID(), forCorp, isPrivate->value()?1:0, assigneeID.has_value() ? assigneeID.value()->value() : 0,
+        int64(GetFileTimeNow()), int64(GetRelativeFileTime(0, 0, expireTime->value())), expireTime->value(), duration->value(), expireTime->value() / 1440,
+        startStationID->value(), startSystemId, startRegionId, endStationID.has_value() ? endStationID.value()->value() : 0, endSystemId, endRegionId,
+        price->value(), reward->value(), collateral->value(), title->content().c_str(), description->content().c_str(), call.client->GetAllianceID(), startStationDivision);
+
     if (!sDatabase.RunQueryLID(err, contractId,
         "INSERT INTO ctrContracts "
         "(contractType, issuerID, issuerCorpID, forCorp, isPrivate, assigneeID, "
