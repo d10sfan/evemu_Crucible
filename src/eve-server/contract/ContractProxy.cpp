@@ -279,7 +279,7 @@ PyResult ContractProxy::CreateContract(PyCallArgs &call,
         "price, reward, collateral, title, description, issuerAllianceID, startStationDivision) "
         "VALUES "
         "(%u, %u, %u, %u, %u, %u, "
-        "%lli, %lli, %u, %u, %u, "
+        "%li, %li, %u, %u, %u, "
         "%u, %u, %u, %u, %u, %u,"
         "%u, %u, %u, '%s', '%s', %u, %u)",
         contractType->value(), call.client->GetCharacterID(), call.client->GetCorporationID(), forCorp, isPrivate->value()?1:0, assigneeID.has_value() ? assigneeID.value()->value() : 0,
