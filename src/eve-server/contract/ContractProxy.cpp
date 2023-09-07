@@ -281,10 +281,11 @@ PyResult ContractProxy::CreateContract(PyCallArgs &call,
         "(%u, %u, %u, %u, %u, %u, "
         "%lli, %lli, %u, %u, %u, "
         "%u, %u, %u, %u, %u, %u,"
-        ")",
+        "%u, %u, %u, '%s', '%s', %u, %u)",
         contractType->value(), call.client->GetCharacterID(), call.client->GetCorporationID(), forCorp, isPrivate->value()?1:0, assigneeID.has_value() ? assigneeID.value()->value() : 0,
         int64(GetFileTimeNow()), int64(GetRelativeFileTime(0, 0, expireTime->value())), expireTime->value(), duration->value(), expireTime->value() / 1440,
-        startStationID->value(), startSystemId, startRegionId, endStationID.has_value() ? endStationID.value()->value() : 0, endSystemId, endRegionId);
+        startStationID->value(), startSystemId, startRegionId, endStationID.has_value() ? endStationID.value()->value() : 0, endSystemId, endRegionId,
+        price->value(), reward->value(), collateral->value(), "", "", call.client->GetAllianceID(), startStationDivision);
 
     if (!sDatabase.RunQueryLID(err, contractId,
         "INSERT INTO ctrContracts "
