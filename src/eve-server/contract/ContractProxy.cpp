@@ -42,7 +42,8 @@ ContractProxy::ContractProxy () :
     Service("contractProxy")
 {
     this->Add("GetContract", &ContractProxy::GetContract);
-    this->Add("CreateContract", &ContractProxy::CreateContract);
+    this->Add("CreateContract", static_cast <PyResult(ContractProxy::*)(PyCallArgs &,PyInt*, PyBool*, std::optional <PyNone*>, PyInt*, PyInt*, PyInt*, std::optional<PyNone*>, PyInt*, PyInt*, PyInt*, PyString*, PyString*)> (&ContractProxy::CreateContract));
+    this->Add("CreateContract", static_cast <PyResult(ContractProxy::*)(PyCallArgs&, PyInt*, PyInt*, std::optional <PyInt*>, PyInt*, PyInt*, PyInt*, std::optional<PyInt*>, PyFloat*, PyFloat*, PyFloat*, PyString*, PyString*)> (&ContractProxy::CreateContract));
     this->Add("DeleteContract", &ContractProxy::DeleteContract);
     this->Add("AcceptContract", &ContractProxy::AcceptContract);
     this->Add("CompleteContract", &ContractProxy::CompleteContract);
@@ -198,6 +199,12 @@ PyResult ContractProxy::SearchContracts(PyCallArgs &call) {
         codelog(SERVICE__ERROR, "%s: ContractType was not specified. Aborting search", GetName());
         return nullptr;
     }
+}
+
+PyResult ContractProxy::CreateContract(PyCallArgs &call,
+    PyInt* contractType, PyBool* isPrivate, std::optional <PyNone*> assigneeID, PyInt* expireTime, PyInt* duration, PyInt* startStationID, std::optional<PyNone*> endStationID,
+    PyInt* price, PyInt* reward, PyInt* collateral, PyString* title, PyString* description) {
+    return CreateContract(call, contractType, new PyInt(isPrivate->value()), std::nullopt, expireTime, duration, startStationID, std::nullopt, new PyFloat(price->value()), new PyFloat(reward->value()), new PyFloat(collateral->value()), title, description);
 }
 
 PyResult ContractProxy::CreateContract(PyCallArgs &call, 
