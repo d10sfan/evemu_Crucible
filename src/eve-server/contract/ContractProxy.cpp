@@ -272,6 +272,8 @@ PyResult ContractProxy::CreateContract(PyCallArgs &call,
     uint32 contractId = 0;
     DBerror err;
 
+    codelog(SERVICE__ERROR, "test123 - %u %u", price->value(), reward->value());
+
     printf( "INSERT INTO ctrContracts "
         "(contractType, issuerID, issuerCorpID, forCorp, isPrivate, assigneeID, "
         "dateIssued, dateExpired, expireTimeInMinutes, duration, numDays, "
